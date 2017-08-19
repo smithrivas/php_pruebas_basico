@@ -2,10 +2,12 @@
 class Acceso{
   protected $user;
   protected $pass;
+  protected $email;
 
-  public function __construct($usuario,$password){
+  public function __construct($usuario,$password,$email){
     $this->user = $usuario;
     $this->pass = $password;
+    $this->email = $email;
   }
 
   public function Login(){
@@ -18,7 +20,7 @@ class Acceso{
     $data = $db->recorrer($sql);
     //$data['nombre'];
     //$data['password'];
-    if ($data['nombre'] === $this->user AND $data['password'] == $this->pass) {
+    if ($data['nombre'] === $this->user AND $data['password'] === $this->pass) {
       session_start();
       $_SESSION['user'] = $this->user;
       header('location: acceso.php');
@@ -31,6 +33,22 @@ class Acceso{
   }
 
   public function Registro(){
+    // Conexion a la DB.
+    $db = new Conexion();
+    // Insersion de datos.
+    $sql = $db->query(" INSERT INTO usuarios (nombre, email, password)
+                        VALUES ('$this->user','$this->email','$this->pass') ");
+    if ($sql) {
+      //echo 'Datos insertados correctamente.';
+      session_start();
+      $_SESSION['registroExitoso'] = 'Te has registrado exitosamente.';
+      header('location: index.php');
+    } else {
+      //Los datos no fueron insertados;
+      session_start();
+      $_SESSION['registroError'] = 'Los datos no pudieron ser insertados, intenta de nuevo.';
+      header('location: registro.php');
+    }
 
   }
 

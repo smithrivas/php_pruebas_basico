@@ -13,7 +13,7 @@ switch ($modo) {
           //Comprobar que campos no esten vacios;
           //echo "Campos llenados";
           include('includes/class.acceso.php');
-          $login = new Acceso($_POST['user'],$_POST['pass']);
+          $login = new Acceso($_POST['user'],$_POST['pass'],null);
           $login->Login();
           }else{
             //echo "Campos vacios"----Redireccionar a formulario de inicio de sesion.
@@ -27,8 +27,27 @@ switch ($modo) {
     }
     break;
 
-  case 'registrado':
-    echo 'Esto es el registro';
+  case 'registro':
+    //Valida que se haya enviado el input oculto "registro"
+    if (isset($_POST['registro'])) {
+      //Valida que esten rellenados todos los campos.
+      if (!empty($_POST['user']) AND !empty($_POST['email']) AND !empty($_POST['pass'])) {
+        include('includes/class.acceso.php');
+        $registro = new Acceso($_POST['user'],$_POST['pass'],$_POST['email']);
+        $registro->Registro();
+      } else {
+        session_start();
+        $_SESSION['registroError'] = 'Debes llenar todos los campos.';
+        header('location: registro.php');
+      }
+
+
+    } else {
+      // Redireccionar a formulario de registro.
+      header('location: registro.php');
+    }
+
+
     break;
   case 'claveperdida':
     echo 'Clave perdida';
