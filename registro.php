@@ -17,7 +17,10 @@ session_start();
       if (isset($_SESSION['registroError'])) {
         if($_SESSION['registroError'] == "Debes llenar todos los campos."){
           echo 'orange;';
-        }else if ($_SESSION['registroError'] == "Los datos no pudieron ser insertados, intenta de nuevo.") {
+        }else if ($_SESSION['registroError'] == "Los datos no pudieron ser insertados, intenta de nuevo." OR
+        $_SESSION['registroError'] == "ERROR: el nombre de usuario ya existe, digita uno distinto." OR
+        $_SESSION['registroError'] == "ERROR: la direccion de email registrada ya existe, digita uno distinto." OR
+        $_SESSION['registroError'] = "ERROR: el nombre de usuario y el email ya existen, digita unos distintos.") {
           echo 'red;';
         }else{
           echo '';
