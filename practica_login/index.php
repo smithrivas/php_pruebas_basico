@@ -22,7 +22,7 @@ session_start();
     }else{
       echo '';
     }
-  }else if (isset($_SESSION['registroExitoso'])){
+  }else if (isset($_SESSION['registroExitoso']) OR isset($_SESSION['recuperarExitoso'])){
     echo 'green;';
   }
   ?>">
@@ -33,9 +33,13 @@ session_start();
   }else if(isset($_SESSION['registroExitoso'])){
     echo $_SESSION['registroExitoso'];
     unset($_SESSION['registroExitoso']);
+  }else if (isset($_SESSION['recuperarExitoso'])) {
+    echo $_SESSION['recuperarExitoso'];
+    unset($_SESSION['recuperarExitoso']);
   } ?></label><br/>
   <input type="hidden" name="login" value="1">
   <input type="submit" value="Iniciar sesion"><br/><br/>
+  <label>Olvidaste tu contraseña? </label><a href="recuperar.php"> Recuperar contraseña!</a><br/>
   <label>No tienes cuenta? </label><a href="registro.php"> Registrate aqui!</a>
 </form>
   </body>

@@ -51,7 +51,7 @@ class Acceso{
   //Si el nombre ingresado y el email ya esta en la Db redireccionar a formulario de registro e informar error.
   }else if ($existe['nombre'] == $this->user and $existe['email'] == $this->email){
     session_start();
-    $_SESSION['registroError'] = 'ERROR: el nombre de usuario y el email ya existen, digita unos distintos.';
+    $_SESSION['registroError'] = 'ERROR: el nombre de usuario y el email ya existen, has olvidado tu cuenta ? <a href="recuperar.php"> Recuperala!</a>';
     header('location: registro.php');
         //Si el nombre ingresado ya esta en la Db redireccionar a formulario de registro e informar error.
         }else if($existe['nombre'] == $this->user){
@@ -64,23 +64,29 @@ class Acceso{
             $_SESSION['registroError'] = 'ERROR: la direccion de email registrada ya existe, digita uno distinto.';
             header('location: registro.php');
             }
-/*
-    if ($sql) {
-      //echo 'Datos insertados correctamente.';
-      session_start();
-      $_SESSION['registroExitoso'] = 'Te has registrado exitosamente.';
-      header('location: index.php');
-
-    } else {
-      //Los datos no fueron insertados;
-      session_start();
-      $_SESSION['registroError'] = 'Los datos no pudieron ser insertados, intenta de nuevo.';
-      header('location: registro.php');
-    }
-*/
   }
 
-  public function ClavePerdida(){
+  public function Clave_perdida(){
+    $db = new Conexion();
+    $sql = $db->query(" SELECT email FROM usuarios WHERE email='$this->email'; ");
+    $data = $db->recorrer($sql);
+    if ($data['email'] == $this->email) {
+      include('includes/class.generar_pass.php');
+      $passw = new Generarpass();
+      //Se le pasa por parametro la longitud de la contraseña.
+      $password = $passw->Nueva_pass(10);
+      //Se actualiza la contraseña.
+      $db->query(" UPDATE usuarios SET password='$password' WHERE email='$this->email'; ");
+      //3 parametros/Correo/Asunto/Conenido del correo.
+      mail($this->email,'Cambio de contraseña',"Su contraseña ha sido cambiada, nueva contraseña: $password");
+      session_start();
+      $_SESSION['recuperarExitoso'] = 'La nueva contraseña ha sido enviada a tu correo electronico.';
+      header('location: index.php');
+    } else {
+      session_start();
+      $_SESSION['recuperarError'] = 'El email que has ingresado no se encuentra registrado.';
+      header('location: recuperar.php');
+    }
 
   }
 }

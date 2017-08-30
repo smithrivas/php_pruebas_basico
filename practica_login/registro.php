@@ -20,7 +20,7 @@ session_start();
         }else if ($_SESSION['registroError'] == "Los datos no pudieron ser insertados, intenta de nuevo." OR
         $_SESSION['registroError'] == "ERROR: el nombre de usuario ya existe, digita uno distinto." OR
         $_SESSION['registroError'] == "ERROR: la direccion de email registrada ya existe, digita uno distinto." OR
-        $_SESSION['registroError'] = "ERROR: el nombre de usuario y el email ya existen, digita unos distintos.") {
+        $_SESSION['registroError'] = 'ERROR: el nombre de usuario y el email ya existen, has olvidado tu cuenta ? <a href="recuperar.php"> Recuperala!</a>') {
           echo 'red;';
         }else{
           echo '';

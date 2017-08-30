@@ -49,8 +49,26 @@ switch ($modo) {
 
 
     break;
-  case 'claveperdida':
-    echo 'Clave perdida';
+  case 'recuperarContrasena':
+    //Si se envio datos por el formulario de recuperacion.
+    if (isset($_POST['email'])) {
+      //Si no esta vacio lo que se envio por formulario.
+      if (!empty($_POST['email'])) {
+        include('includes/class.acceso.php');
+        $recuperar = new Acceso(null,null,$_POST['email']);
+        $recuperar->Clave_perdida();
+        
+      //Si esta vacio lo que se envio por formulario, crear error y direccionar.
+      } else {
+        session_start();
+        $_SESSION['recuperarError'] = 'Debes escribir tu correo.';
+        header('location: recuperar.php');
+      }
+    } else {
+      //Si no se envio nada redireccionar al formulario de recuperacion.
+      header('location: recuperar.php');
+    }
+
     break;
   case 'salir':
     session_start();
